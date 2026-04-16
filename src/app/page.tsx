@@ -6,6 +6,7 @@ import Projects from '@/components/Projects';
 import Education from '@/components/Education';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
+import VisitorEmailCapture from '@/components/VisitorEmailCapture';
 
 export default function Home() {
   return (
@@ -18,6 +19,8 @@ export default function Home() {
       <Education />
       <Contact />
       <Footer />
+      {/* Subtle email capture — shown after 15s, bottom-right, unobtrusive */}
+      <VisitorEmailCapture />
     </main>
   );
 }

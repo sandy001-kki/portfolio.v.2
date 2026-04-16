@@ -3,8 +3,9 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import AnimatedSection from './AnimatedSection';
 import { SKILL_GROUPS, TECH_STACK } from '@/lib/skills';
+import SkillsRadar from './SkillsRadar';
 
-/* ── Counter hook ─────────────────────────────────── */
+/* ── Counter hook ── */
 function useCounter(target: number, active: boolean, delay = 0) {
   const [val, setVal] = useState(0);
   useEffect(() => {
@@ -25,7 +26,7 @@ function useCounter(target: number, active: boolean, delay = 0) {
   return val;
 }
 
-/* ── Skill row (each skill has its own counter) ───── */
+/* ── Skill row ── */
 function SkillItem({ name, level, color, visible, delay }: {
   name: string; level: number; color: string; visible: boolean; delay: number;
 }) {
@@ -41,23 +42,35 @@ function SkillItem({ name, level, color, visible, delay }: {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '7px', alignItems: 'center' }}>
-        <span style={{ color: '#cbd5e1', fontSize: '0.92rem', fontWeight: 500 }}>{name}</span>
-        <span style={{ color: visible ? color : '#475569', fontSize: '0.72rem', fontFamily: 'monospace', fontWeight: 700, transition: 'color 0.5s' }}>
+        <span style={{ color: '#374151', fontSize: '0.88rem', fontWeight: 500 }}>{name}</span>
+        <span style={{
+          color: visible ? color : '#D1D5DB',
+          fontSize: '0.7rem', fontFamily: 'JetBrains Mono, monospace',
+          fontWeight: 700, transition: 'color 0.5s',
+        }}>
           {counted}%
         </span>
       </div>
-      {/* Bar */}
-      <div style={{ height: '4px', background: 'rgba(255,255,255,0.05)', borderRadius: '99px', overflow: 'hidden', position: 'relative' }}>
+      <div style={{
+        height: '4px', background: '#F3F2EF',
+        borderRadius: '99px', overflow: 'hidden', position: 'relative',
+      }}>
         <div style={{
           height: '100%', borderRadius: '99px',
           width: barOn ? `${level}%` : '0%',
-          background: `linear-gradient(90deg, ${color}bb, ${color})`,
+          background: color,
           transition: 'width 1.1s cubic-bezier(0.16,1,0.3,1)',
-          boxShadow: barOn ? `0 0 10px ${color}80` : 'none',
           position: 'relative',
         }}>
           {barOn && (
-            <div style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', width: '7px', height: '7px', borderRadius: '50%', background: color, boxShadow: `0 0 6px ${color}` }} />
+            <div style={{
+              position: 'absolute', right: 0, top: '50%',
+              transform: 'translateY(-50%)',
+              width: '8px', height: '8px', borderRadius: '50%',
+              background: '#FFFFFF',
+              border: `2px solid ${color}`,
+              boxShadow: `0 0 4px ${color}60`,
+            }} />
           )}
         </div>
       </div>
@@ -65,7 +78,7 @@ function SkillItem({ name, level, color, visible, delay }: {
   );
 }
 
-/* ── Skill card ───────────────────────────────────── */
+/* ── Skill card ── */
 function SkillCard({ group, index, visible }: { group: typeof SKILL_GROUPS[0]; index: number; visible: boolean }) {
   const [hovered, setHovered] = useState(false);
   const dirs = ['up', 'left', 'right', 'up'] as const;
@@ -76,31 +89,32 @@ function SkillCard({ group, index, visible }: { group: typeof SKILL_GROUPS[0]; i
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         style={{
-          padding: '24px', height: '100%',
-          background: hovered ? 'rgba(30,41,59,0.8)' : 'rgba(15,23,42,0.65)',
-          backdropFilter: 'blur(20px)',
-          border: hovered ? `1px solid ${group.color}35` : '1px solid rgba(255,255,255,0.07)',
-          borderRadius: '18px',
-          transition: 'all 0.35s ease',
-          transform: hovered ? 'translateY(-6px) scale(1.01)' : 'translateY(0) scale(1)',
-          boxShadow: hovered ? `0 24px 48px rgba(0,0,0,0.3), 0 0 30px ${group.color}14` : 'none',
+          padding: '24px',
+          height: '100%',
+          background: hovered ? '#F8F7FF' : '#FFFFFF',
+          border: hovered ? `1px solid ${group.color}35` : '1px solid #EBEBEB',
+          borderRadius: '14px',
+          transition: 'all 0.28s ease',
+          transform: hovered ? 'translateY(-5px)' : 'translateY(0)',
+          boxShadow: hovered
+            ? `0 16px 40px rgba(0,0,0,0.08), 0 0 0 1px ${group.color}20`
+            : '0 1px 4px rgba(0,0,0,0.05)',
           cursor: 'default',
         }}
       >
         {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '22px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
           <div style={{
             width: '10px', height: '10px', borderRadius: '50%',
             background: group.color,
-            boxShadow: `0 0 ${hovered ? '16px' : '8px'} ${group.color}`,
-            transition: 'box-shadow 0.3s',
             flexShrink: 0,
           }} />
           <h3 style={{
-            fontFamily: 'Archivo, sans-serif', fontWeight: 800,
-            color: hovered ? group.color : '#f1f5f9',
-            fontSize: '0.82rem', letterSpacing: '0.08em', textTransform: 'uppercase',
-            transition: 'color 0.3s',
+            fontFamily: 'Inter, sans-serif',
+            fontWeight: 700,
+            color: hovered ? group.color : '#0F0E14',
+            fontSize: '0.78rem', letterSpacing: '0.08em', textTransform: 'uppercase',
+            transition: 'color 0.25s',
           }}>
             {group.category}
           </h3>
@@ -123,7 +137,7 @@ function SkillCard({ group, index, visible }: { group: typeof SKILL_GROUPS[0]; i
   );
 }
 
-/* ── Tech cloud item ──────────────────────────────── */
+/* ── Tech cloud item ── */
 function TechItem({ tech, index }: { tech: string; index: number }) {
   const [show, setShow] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -131,7 +145,7 @@ function TechItem({ tech, index }: { tech: string; index: number }) {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setTimeout(() => setShow(true), index * 22); observer.disconnect(); } },
+      ([e]) => { if (e.isIntersecting) { setTimeout(() => setShow(true), index * 20); observer.disconnect(); } },
       { threshold: 0.05 }
     );
     if (ref.current) observer.observe(ref.current);
@@ -144,12 +158,13 @@ function TechItem({ tech, index }: { tech: string; index: number }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        padding: '7px 14px', borderRadius: '8px',
-        background: hovered ? 'rgba(34,197,94,0.09)' : 'rgba(30,41,59,0.7)',
-        border: hovered ? '1px solid rgba(34,197,94,0.35)' : '1px solid rgba(255,255,255,0.06)',
-        color: hovered ? '#fff' : '#94a3b8',
-        fontSize: '0.82rem', fontWeight: 500,
-        transition: 'all 0.2s ease',
+        padding: '6px 13px', borderRadius: '8px',
+        background: hovered ? 'rgba(99,102,241,0.08)' : '#F3F2EF',
+        border: hovered ? '1px solid rgba(99,102,241,0.28)' : '1px solid #E0DFE4',
+        color: hovered ? '#6366F1' : '#4B5563',
+        fontSize: '0.8rem', fontWeight: 500,
+        fontFamily: 'JetBrains Mono, monospace',
+        transition: 'all 0.18s ease',
         cursor: 'default',
         opacity: show ? 1 : 0,
         transform: show ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.92)',
@@ -161,7 +176,7 @@ function TechItem({ tech, index }: { tech: string; index: number }) {
   );
 }
 
-/* ── Tech typewriter ─────────────────────────────── */
+/* ── Tech typewriter ── */
 const TECH_PHRASES = [
   'Python • OpenCV • YOLOv8',
   'Next.js • TypeScript • Tailwind',
@@ -170,7 +185,7 @@ const TECH_PHRASES = [
   'R • Shiny • Random Forest',
   'Flutter • Dart • Firebase',
   'Three.js • WebGL • React',
-  'Docker • Kubernetes (K8s) • Linux',
+  'Go • Kubernetes • Helm',
   'Supabase • PostgreSQL • Node.js',
   'MediaPipe • OpenCV • NumPy',
 ];
@@ -183,7 +198,6 @@ function TechTypewriter() {
   const [active, setActive] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Start only when visible
   useEffect(() => {
     const obs = new IntersectionObserver(
       ([e]) => { if (e.isIntersecting) { setActive(true); obs.disconnect(); } },
@@ -226,36 +240,25 @@ function TechTypewriter() {
     <div
       ref={sectionRef}
       style={{
-        textAlign: 'center',
-        marginBottom: '20px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '6px',
-        minHeight: '32px',
+        textAlign: 'center', marginBottom: '20px',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        gap: '6px', minHeight: '32px',
       }}
     >
-      <span style={{ color: '#475569', fontSize: '0.9rem', fontWeight: 500 }}>I work with</span>
+      <span style={{ color: '#6B7280', fontSize: '0.88rem', fontWeight: 500 }}>I work with</span>
       <span
         ref={spanRef}
         style={{
-          color: '#22C55E',
-          fontSize: '0.95rem',
-          fontWeight: 600,
-          fontFamily: 'Space Grotesk, monospace',
-          letterSpacing: '0.02em',
-          minWidth: '4px',
+          color: '#6366F1',
+          fontSize: '0.9rem', fontWeight: 700,
+          fontFamily: 'JetBrains Mono, monospace',
+          letterSpacing: '0.02em', minWidth: '4px',
         }}
       />
       <span
         style={{
-          display: 'inline-block',
-          width: '2px',
-          height: '16px',
-          background: '#22C55E',
-          borderRadius: '2px',
-          boxShadow: '0 0 6px #22C55E',
-          flexShrink: 0,
+          display: 'inline-block', width: '2px', height: '16px',
+          background: '#6366F1', borderRadius: '2px', flexShrink: 0,
         }}
         className="cursor-blink"
       />
@@ -263,7 +266,7 @@ function TechTypewriter() {
   );
 }
 
-/* ── Main section ─────────────────────────────────── */
+/* ── Main ── */
 export default function Skills() {
   const [visible, setVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -283,22 +286,63 @@ export default function Skills() {
   }, [setup]);
 
   return (
-    <section id="skills" style={{ padding: '112px 24px', position: 'relative' }}>
-      <div style={{ position: 'absolute', top: '50%', right: 0, width: '400px', height: '400px', background: 'rgba(59,130,246,0.03)', borderRadius: '50%', filter: 'blur(80px)', pointerEvents: 'none', transform: 'translateY(-50%)' }} />
-
+    <section id="skills" style={{ padding: '112px 24px', background: '#FAF9F6', position: 'relative' }}>
       <div style={{ maxWidth: '1120px', margin: '0 auto' }}>
 
         <AnimatedSection>
           <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-            <p style={{ color: '#22C55E', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '16px' }}>Skills</p>
-            <h2 className="section-title" style={{ color: '#f8fafc' }}>
-              Tech Stack &amp; <span className="gradient-text">Expertise</span>
+            <p style={{
+              color: '#6366F1', fontSize: '0.75rem', fontWeight: 700,
+              letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '14px',
+              fontFamily: 'JetBrains Mono, monospace',
+            }}>
+              Skills
+            </p>
+            <h2 className="section-title">
+              Tech Stack &amp; <span style={{ color: '#6366F1' }}>Expertise</span>
             </h2>
           </div>
         </AnimatedSection>
 
+        {/* ── Radar chart ── */}
+        <AnimatedSection delay={80}>
+          <div style={{
+            background: '#FFFFFF',
+            border: '1px solid #EBEBEB',
+            borderRadius: '20px',
+            padding: '40px 32px 32px',
+            marginBottom: '32px',
+            boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
+          }}>
+            <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+              <p style={{
+                color: '#9CA3AF', fontSize: '0.7rem', fontWeight: 700,
+                letterSpacing: '0.12em', textTransform: 'uppercase',
+                fontFamily: 'JetBrains Mono, monospace', marginBottom: '6px',
+              }}>
+                Domain Proficiency
+              </p>
+              <h3 style={{
+                fontFamily: 'Inter, sans-serif', fontWeight: 700,
+                fontSize: '1.05rem', color: '#0F0E14', letterSpacing: '-0.02em',
+              }}>
+                Skills Radar
+              </h3>
+            </div>
+            <SkillsRadar />
+          </div>
+        </AnimatedSection>
+
         {/* Skill cards */}
-        <div ref={ref} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))', gap: '20px', marginBottom: '28px' }}>
+        <div
+          ref={ref}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))',
+            gap: '16px',
+            marginBottom: '24px',
+          }}
+        >
           {SKILL_GROUPS.map((group, i) => (
             <SkillCard key={group.category} group={group} index={i} visible={visible} />
           ))}
@@ -306,12 +350,23 @@ export default function Skills() {
 
         {/* Tech cloud */}
         <AnimatedSection delay={300}>
-          <div style={{ background: 'rgba(15,23,42,0.65)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '18px', padding: '32px' }}>
+          <div style={{
+            background: '#FFFFFF',
+            border: '1px solid #EBEBEB',
+            borderRadius: '16px',
+            padding: '32px',
+            boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
+          }}>
             <TechTypewriter />
-            <p style={{ color: '#334155', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '20px', textAlign: 'center' }}>
+            <p style={{
+              color: '#C8C7CC', fontSize: '0.7rem', fontWeight: 700,
+              letterSpacing: '0.15em', textTransform: 'uppercase',
+              marginBottom: '20px', textAlign: 'center',
+              fontFamily: 'JetBrains Mono, monospace',
+            }}>
               All Technologies
             </p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '7px', justifyContent: 'center' }}>
               {TECH_STACK.map((tech, i) => (
                 <TechItem key={tech} tech={tech} index={i} />
               ))}

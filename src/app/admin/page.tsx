@@ -12,7 +12,8 @@ export const dynamic = 'force-dynamic';
 
 const ADMIN_EMAIL = 'bollavaramsandeep@gmail.com';
 
-interface PageView { id: string; created_at: string; path: string; }
+interface PageView { id: string; created_at: string; path: string; referrer?: string; user_agent?: string; ip?: string; }
+interface VisitorEmail { id: string; email: string; source: string; user_agent?: string; referrer?: string; created_at: string; }
 interface ContactMsg {
   id: string; created_at: string; first_name: string; last_name: string;
   email: string; organization: string; region: string; industry: string; message: string;
@@ -29,6 +30,24 @@ function fmt(iso: string) {
 
 function fmtDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function shortReferrer(referrer?: string) {
+  if (!referrer) return 'Direct';
+  try {
+    return new URL(referrer).hostname.replace(/^www\./, '');
+  } catch {
+    return referrer;
+  }
+}
+
+function shortUserAgent(userAgent?: string) {
+  if (!userAgent) return 'Unknown';
+  if (userAgent.includes('Chrome')) return 'Chrome';
+  if (userAgent.includes('Firefox')) return 'Firefox';
+  if (userAgent.includes('Safari') && !userAgent.includes('Chrome')) return 'Safari';
+  if (userAgent.includes('Edge')) return 'Edge';
+  return userAgent.length > 28 ? `${userAgent.slice(0, 28)}...` : userAgent;
 }
 
 function todayCount(views: PageView[]) {
@@ -85,11 +104,13 @@ export default function AdminPage() {
   const [authChecking, setAuthChecking] = useState(true);
 
   const [views, setViews] = useState<PageView[]>([]);
+  const [visitorEmails, setVisitorEmails] = useState<VisitorEmail[]>([]);
+  const [emailError, setEmailError] = useState<string | null>(null);
   const [contacts, setContacts] = useState<ContactMsg[]>([]);
   const [hires, setHires] = useState<HireReq[]>([]);
   const [loading, setLoading] = useState(false);
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
-  const [activeTab, setActiveTab] = useState<'contact' | 'hire'>('contact');
+  const [activeTab, setActiveTab] = useState<'contact' | 'hire' | 'emails'>('emails');
 
   /* ── Auth check ── */
   useEffect(() => {
@@ -110,16 +131,54 @@ export default function AdminPage() {
   const fetchAll = useCallback(async () => {
     if (!supabase) return;
     setLoading(true);
-    const [vRes, cRes, hRes] = await Promise.all([
-      supabase.from('page_views').select('*').order('created_at', { ascending: false }),
-      supabase.from('contact_messages').select('*').order('created_at', { ascending: false }),
-      supabase.from('hire_requests').select('*').order('created_at', { ascending: false }),
-    ]);
-    if (vRes.data) setViews(vRes.data as PageView[]);
-    if (cRes.data) setContacts(cRes.data as ContactMsg[]);
-    if (hRes.data) setHires(hRes.data as HireReq[]);
-    setLoading(false);
-    setLastRefresh(new Date());
+    setEmailError(null);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const emailPromise = session?.access_token
+        ? fetch('/api/admin/visitor-emails', {
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        }).then(async response => {
+          const payload = await response.json();
+          if (!response.ok || !payload.ok) {
+            throw new Error(payload.error || 'Unable to load visitor emails.');
+          }
+          return payload.emails as VisitorEmail[];
+        })
+        : Promise.resolve<VisitorEmail[]>([]);
+
+      const [vRes, cRes, hRes, veRes] = await Promise.all([
+        supabase.from('page_views').select('*').order('created_at', { ascending: false }),
+        supabase.from('contact_messages').select('*').order('created_at', { ascending: false }),
+        supabase.from('hire_requests').select('*').order('created_at', { ascending: false }),
+        emailPromise,
+      ]);
+
+      if (vRes.data) setViews(vRes.data as PageView[]);
+      if (cRes.data) setContacts(cRes.data as ContactMsg[]);
+      if (hRes.data) setHires(hRes.data as HireReq[]);
+      setVisitorEmails(veRes);
+
+      if (vRes.error || cRes.error || hRes.error) {
+        console.error('Admin dashboard query error', {
+          pageViews: vRes.error?.message,
+          contacts: cRes.error?.message,
+          hires: hRes.error?.message,
+        });
+      }
+
+      if (!session?.access_token) {
+        setEmailError('Admin session expired. Sign in again to view visitor emails.');
+        setVisitorEmails([]);
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unable to load visitor emails.';
+      setEmailError(message);
+      setVisitorEmails([]);
+      console.error('Visitor email load error', message);
+    } finally {
+      setLoading(false);
+      setLastRefresh(new Date());
+    }
   }, []);
 
   useEffect(() => {
@@ -200,6 +259,7 @@ export default function AdminPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '16px', marginBottom: '40px' }}>
           <StatCard icon={TrendingUp} label="Total Page Views" value={views.length} sub={`${todayCount(views)} today`} color="#22C55E" />
           <StatCard icon={Users} label="Unique Paths Hit" value={Object.keys(pathCounts).length} color="#3B82F6" />
+          <StatCard icon={Mail} label="Visitor Emails" value={visitorEmails.length} sub="subscribed" color="#6366F1" />
           <StatCard icon={Mail} label="Contact Messages" value={contacts.length} color="#8B5CF6" />
           <StatCard icon={Briefcase} label="Hire Requests" value={hires.length} color="#F59E0B" />
         </div>
@@ -231,6 +291,7 @@ export default function AdminPage() {
           {/* Tab bar */}
           <div style={{ display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
             {([
+              { key: 'emails', label: 'Visitor Emails', count: visitorEmails.length, color: '#6366F1' },
               { key: 'contact', label: 'Contact Messages', count: contacts.length, color: '#8B5CF6' },
               { key: 'hire', label: 'Hire Requests', count: hires.length, color: '#F59E0B' },
             ] as const).map(tab => (
@@ -261,6 +322,65 @@ export default function AdminPage() {
               </button>
             ))}
           </div>
+
+          {/* ── Visitor emails table ── */}
+          {activeTab === 'emails' && (
+            <div style={{ overflowX: 'auto' }}>
+              {emailError && (
+                <div style={{ margin: '16px', padding: '12px 14px', borderRadius: '12px', background: 'rgba(239,68,68,0.10)', border: '1px solid rgba(239,68,68,0.25)', color: '#FCA5A5', fontSize: '0.82rem' }}>
+                  {emailError}
+                </div>
+              )}
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr>
+                    <th style={TH}>Email</th>
+                    <th style={TH}>Source</th>
+                    <th style={TH}>Referrer</th>
+                    <th style={TH}>User Agent</th>
+                    <th style={TH}>Captured</th>
+                    <th style={{ ...TH, width: '32px' }}></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {visitorEmails.length === 0 && (
+                    <tr><td colSpan={6} style={{ ...TD, textAlign: 'center', padding: '40px', color: '#334155' }}>{emailError ? 'Visitor emails could not be loaded.' : 'No visitor emails captured yet.'}</td></tr>
+                  )}
+                  {visitorEmails.map(email => (
+                    <ExpandRow
+                      key={email.id}
+                      extra={(
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px', padding: '16px', background: 'rgba(99,102,241,0.05)', borderRadius: '10px', marginTop: '4px' }}>
+                          <div>
+                            <p style={{ color: '#6366F1', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase', marginBottom: '6px' }}>Referrer URL</p>
+                            <p style={{ color: '#cbd5e1', fontSize: '0.84rem', lineHeight: 1.6, wordBreak: 'break-word' }}>{email.referrer || 'Direct visit'}</p>
+                          </div>
+                          <div>
+                            <p style={{ color: '#6366F1', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase', marginBottom: '6px' }}>User Agent</p>
+                            <p style={{ color: '#cbd5e1', fontSize: '0.84rem', lineHeight: 1.6, wordBreak: 'break-word' }}>{email.user_agent || 'Unavailable'}</p>
+                          </div>
+                        </div>
+                      )}
+                    >
+                      <td style={TD}>
+                        <a href={`mailto:${email.email}`} style={{ color: '#818CF8', textDecoration: 'none', fontWeight: 600 }}>
+                          {email.email}
+                        </a>
+                      </td>
+                      <td style={TD}>
+                        <span style={{ background: 'rgba(99,102,241,0.12)', color: '#A5B4FC', fontSize: '0.75rem', padding: '2px 8px', borderRadius: '999px', fontWeight: 600 }}>
+                          {email.source || 'banner'}
+                        </span>
+                      </td>
+                      <td style={TD}>{shortReferrer(email.referrer)}</td>
+                      <td style={TD}>{shortUserAgent(email.user_agent)}</td>
+                      <td style={{ ...TD, whiteSpace: 'nowrap', fontSize: '0.75rem' }}>{fmt(email.created_at)}</td>
+                    </ExpandRow>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
 
           {/* ── Contact table ── */}
           {activeTab === 'contact' && (

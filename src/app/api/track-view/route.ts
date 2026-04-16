@@ -11,11 +11,15 @@ export async function POST(req: NextRequest) {
 
   try {
     const { path } = await req.json();
-    // Skip admin pages from tracking
     if (path?.startsWith('/admin')) return NextResponse.json({ ok: false });
 
     const sb = createClient(url, key);
-    await sb.from('page_views').insert([{ path: path || '/' }]);
+    await sb.from('page_views').insert([{
+      path: path || '/',
+      referrer:    req.headers.get('referer')     ?? null,
+      user_agent:  req.headers.get('user-agent')  ?? null,
+      ip:          req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? null,
+    }]);
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ ok: false });

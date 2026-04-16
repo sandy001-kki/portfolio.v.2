@@ -13,7 +13,7 @@ export interface SkillGroup {
 export const SKILL_GROUPS: SkillGroup[] = [
   {
     category: 'AI / ML',
-    color: '#22C55E',
+    color: '#7C3AED',
     skills: [
       { name: 'Python', level: 92, icon: 'python' },
       { name: 'OpenCV', level: 85, icon: 'opencv' },
@@ -24,7 +24,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
   },
   {
     category: 'Web Dev',
-    color: '#3B82F6',
+    color: '#0284C7',
     skills: [
       { name: 'Next.js', level: 88, icon: 'nextjs' },
       { name: 'TypeScript', level: 85, icon: 'typescript' },
@@ -36,7 +36,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
   },
   {
     category: 'Robotics',
-    color: '#F59E0B',
+    color: '#059669',
     skills: [
       { name: 'Raspberry Pi', level: 80, icon: 'raspberrypi' },
       { name: 'Arduino', level: 78, icon: 'arduino' },
@@ -47,13 +47,24 @@ export const SKILL_GROUPS: SkillGroup[] = [
   },
   {
     category: 'Data Science',
-    color: '#8B5CF6',
+    color: '#C2410C',
     skills: [
       { name: 'R / Shiny', level: 72, icon: 'r' },
       { name: 'Random Forest', level: 68, icon: 'ml' },
       { name: 'ARIMA', level: 65, icon: 'timeseries' },
       { name: 'ggplot2', level: 70, icon: 'ggplot' },
       { name: 'Jupyter', level: 80, icon: 'jupyter' },
+    ],
+  },
+  {
+    category: 'DevOps / Cloud',
+    color: '#0891B2',
+    skills: [
+      { name: 'Go', level: 78, icon: 'go' },
+      { name: 'Kubernetes', level: 75, icon: 'k8s' },
+      { name: 'Docker', level: 72, icon: 'docker' },
+      { name: 'Linux', level: 80, icon: 'linux' },
+      { name: 'Helm', level: 68, icon: 'helm' },
     ],
   },
 ];

@@ -1,10 +1,11 @@
-export type Category = 'All' | 'AI / CV' | 'Robotics' | 'Web Dev' | 'Data Science' | 'Academic';
+export type Category = 'All' | 'AI / CV' | 'Robotics' | 'Web Dev' | 'Data Science' | 'Academic' | 'DevOps / Cloud';
 
 export interface Project {
   id: string;
   title: string;
   description: string;
   longDesc: string;
+  features?: string[];
   category: Category;
   tags: string[];
   github: string;
@@ -18,10 +19,38 @@ export interface Project {
 
 export const PROJECTS: Project[] = [
   {
+    id: 'shukra',
+    title: 'Shukra — Kubernetes Operator',
+    description: 'Production-grade K8s Operator: one AppEnvironment YAML creates full Deployments, Services, Ingress, HPA, security resources, and more.',
+    longDesc: 'Shukra is a production-grade Kubernetes platform operator built in Go. It enables developers to define an entire application environment through a single AppEnvironment custom resource, and the operator handles everything: Deployments, Services, ConfigMaps, Ingress, HPA, Jobs, and security resources. Built with finalizers, status conditions, leader election, and structured logging for enterprise reliability. Features an AI-assisted CLI with interactive shukra ask for conversational workflow guidance. Treats namespaces as first-class security tenancy boundaries. Supports kind, k3d, Minikube, EKS, GKE, and AKS for multi-cloud deployment.',
+    features: [
+      'Single YAML definition creates the entire application stack (Deployments, Services, Ingress, HPA)',
+      'Production-grade finalizers, leader election, idempotent reconciliation, structured logging',
+      'AI-assisted CLI with shukra ask — conversational mode for workflow guidance',
+      'Namespace tenancy as security boundaries — multi-tenant safe',
+      'Continuous health monitoring via phase, conditions, and Kubernetes events',
+      'Multi-cluster support: kind, k3d, Minikube, EKS, GKE, AKS',
+    ],
+    category: 'DevOps / Cloud',
+    tags: ['Go', 'Kubernetes', 'Helm', 'DevOps', 'Platform Engineering', 'AI CLI', 'K8s Operator'],
+    github: 'https://github.com/sandy001-kki/Shukra',
+    featured: true,
+    size: 'lg',
+    year: 2026,
+    profile: 'personal',
+  },
+  {
     id: 'socialworld',
     title: 'SocialWorld 3D',
     description: 'Facebook users become buildings in a living 3D city — follower count = building height.',
-    longDesc: 'A 3D city visualization where Facebook users become buildings. Built with React 18 + Three.js (WebGL), Node.js + Express backend, Supabase PostgreSQL, Facebook OAuth 2.0 + JWT. Features fly/drive modes, click buildings to view profiles, billboard ad placements.',
+    longDesc: 'A 3D city visualization where Facebook users become buildings in an interactive world. Follower count determines building height; post engagement drives activity animations. Built with React 18 + Three.js (WebGL renderer), Node.js + Express backend, Supabase PostgreSQL for data, and Facebook OAuth 2.0 + JWT for auth. Users can fly over the city, drive through streets, click buildings to view profiles, and place billboard ads.',
+    features: [
+      'React + Three.js WebGL rendering — real-time 3D city that scales with live data',
+      'Facebook OAuth 2.0: follower count → building height, engagement → animations',
+      'Fly mode and drive mode for city navigation',
+      'Click any building to view the Facebook profile it represents',
+      'Billboard ad placement system for sponsored content',
+    ],
     category: 'Web Dev',
     tags: ['React', 'Three.js', 'WebGL', 'Node.js', 'Supabase', 'OAuth'],
     github: 'https://github.com/sandy001-kki/SocialWorld',
@@ -34,7 +63,13 @@ export const PROJECTS: Project[] = [
     id: 'agv-raspberry',
     title: 'AGV — Raspberry Pi',
     description: 'Autonomous Ground Vehicle with LiDAR mapping, line following & obstacle avoidance. Flutter app control.',
-    longDesc: 'Fully functional Autonomous Ground Vehicle using Raspberry Pi 3 as central controller and Arduino Mega for sensor/motor control. Stack: Python WebSocket server, Arduino C++ firmware, Flutter mobile app. Hardware: YDLIDAR X2, IR array, MPU6050 gyroscope. Modes: Manual joystick, line following, obstacle avoidance.',
+    longDesc: 'Fully functional Autonomous Ground Vehicle using Raspberry Pi 3 as the central controller and Arduino Mega for sensor/motor control. The Python WebSocket server handles real-time telemetry and control commands, while the Flutter mobile app provides a live joystick interface. Hardware: YDLIDAR X2 for 360° mapping, IR array for line following, MPU6050 gyroscope for orientation. Three operating modes: Manual joystick via app, Autonomous line following, Obstacle avoidance with real-time LiDAR.',
+    features: [
+      'Raspberry Pi 3 + Arduino Mega dual-controller architecture',
+      'YDLIDAR X2: real-time 360° environment mapping over WiFi',
+      'Three modes: manual joystick, autonomous line follow, obstacle avoidance',
+      'Flutter mobile app with live telemetry and joystick UI',
+    ],
     category: 'Robotics',
     tags: ['Python', 'Flutter', 'C++', 'Raspberry Pi', 'Arduino', 'LiDAR'],
     github: 'https://github.com/sandy001-kki/agv-raspberry-pi-mega',
@@ -47,7 +82,13 @@ export const PROJECTS: Project[] = [
     id: 'agv-esp32',
     title: 'AGV — ESP32',
     description: 'AGV prototype with Windows laptop + ESP32, live 360° LiDAR mapping over WiFi.',
-    longDesc: 'AGV variant using a Windows laptop + ESP32 microcontroller. Python WebSocket server (port 8765), HTTP web interface (port 8080), Flutter app, ESP32 firmware. Live 360° LiDAR mapping, multi-interface control (mobile/web/joystick), autonomous obstacle avoidance over WiFi.',
+    longDesc: 'AGV variant using a Windows laptop + ESP32 microcontroller, connected over WiFi. Python WebSocket server (port 8765) handles the control loop; HTTP web interface (port 8080) for browser-based control; Flutter app as mobile controller; ESP32 firmware in C++. Features live 360° LiDAR mapping, multi-interface control (mobile app / web / joystick), and autonomous obstacle avoidance — all running over a local WiFi network without a Raspberry Pi.',
+    features: [
+      'ESP32 WiFi-based control — no Raspberry Pi needed, laptop handles compute',
+      'Three simultaneous control interfaces: Flutter app, browser UI, joystick',
+      'WebSocket real-time command protocol for low-latency control',
+      'Live 360° LiDAR obstacle map rendered in browser and app',
+    ],
     category: 'Robotics',
     tags: ['Python', 'Flutter', 'ESP32', 'LiDAR', 'WebSocket', 'C++'],
     github: 'https://github.com/sandy001-kki/agv-laptop-esp32',
@@ -59,10 +100,18 @@ export const PROJECTS: Project[] = [
   {
     id: 'weapon-detection',
     title: 'Weapon Detection AI',
-    description: 'Real-time YOLOv8 weapon detection from surveillance cameras with multi-channel alerts.',
-    longDesc: 'AI-powered security system detecting weapons in surveillance footage using YOLOv8 nano. SQLite database, multi-channel alerts: email, SMS, Telegram, local alarm. Modules: detector, dashboard, emailer, sms_alert, telegram_alert, alarm, scheduler, snapshot.',
+    description: 'Real-time YOLOv8 security surveillance detecting pistols, knives, rifles & grenades at ~30fps with multi-channel alerts.',
+    longDesc: 'AI-powered security surveillance system that identifies weapons in live video feeds at approximately 30 frames per second. Detects 4 weapon categories: pistols, knives, rifles, and grenades. The detection pipeline runs night mode enhancement → OpenCV face identification → YOLOv8 person detection → Roboflow cloud weapon classification. When a threat is confirmed, the system auto-captures snapshots, records video segments, and fires multi-channel alerts. All detections are logged in a searchable SQLite database with a live web monitoring interface.',
+    features: [
+      'Detects 4 weapon types (pistol, knife, rifle, grenade) at ~30fps',
+      'Multi-channel alerts: email, SMS, Telegram bot, local alarm sound',
+      'Auto-capture snapshots and record video segments on threat detection',
+      'Night mode enhancement + face ID + person detect pipeline before weapon classify',
+      'Configurable confidence threshold (default 0.35) and 30s alert cooldown',
+      'Multi-camera support with parallel processing',
+    ],
     category: 'AI / CV',
-    tags: ['Python', 'YOLOv8', 'OpenCV', 'SQLite', 'Telegram API'],
+    tags: ['Python', 'YOLOv8', 'OpenCV', 'SQLite', 'Telegram API', 'Roboflow'],
     github: 'https://github.com/sandy001-kki/Security-Cams-Weapon-Detection-',
     featured: true,
     size: 'md',
@@ -72,8 +121,14 @@ export const PROJECTS: Project[] = [
   {
     id: 'air-writing',
     title: 'Air Writing System',
-    description: 'Touchless hand-gesture writing using MediaPipe — draw, erase, OCR, and save with your finger.',
-    longDesc: 'AI-based hand gesture recognition enabling touchless writing, color selection, erasing, saving drawings, and modular OCR using computer vision. Stack: OpenCV, MediaPipe. Index finger = draw, index+middle = pause, fist = erase, hover over toolbar = select tools. Demo video on YouTube.',
+    description: 'Touchless hand-gesture writing using MediaPipe — draw, erase, OCR, and save with just your finger.',
+    longDesc: 'AI-based hand gesture recognition enabling fully touchless writing, color selection, erasing, saving drawings, and modular OCR using computer vision. Built with OpenCV + MediaPipe hand landmark detection. Gesture controls: index finger extended = draw mode, index + middle = pause/hover, fist = erase, hover over toolbar zones = select color/tool. The canvas can be saved as an image or piped through the OCR module to convert handwriting to text. No physical touchscreen required — works with any standard webcam.',
+    features: [
+      'MediaPipe hand landmark detection — works with any webcam, no special hardware',
+      'Full gesture vocabulary: draw, pause, erase, select color, save',
+      'Modular OCR pipeline to convert air-written text to digital text',
+      'Toolbar hover interface for tool and color selection',
+    ],
     category: 'AI / CV',
     tags: ['Python', 'OpenCV', 'MediaPipe', 'OCR', 'Computer Vision'],
     github: 'https://github.com/sandy001-kki/Air-Writing-System',
@@ -85,8 +140,14 @@ export const PROJECTS: Project[] = [
   {
     id: 's5-attendance',
     title: 'AI Attendance System',
-    description: 'Facial recognition attendance system for university — 160 commits, production-grade with Firebase.',
-    longDesc: 'AI-powered Attendance Management System built for university environments using Next.js, Firebase Auth, and Cloud Firestore. TensorFlow.js + face-api.js for facial recognition. Role-based dashboards (faculty & admin), digital signature verification, automated Excel export.',
+    description: 'Facial recognition attendance for universities — TensorFlow.js face-api, Firebase, role-based dashboards. 160 commits.',
+    longDesc: 'Production-grade AI-powered Attendance Management System built for university environments. Stack: Next.js 15 + TypeScript + Firebase Authentication + Cloud Firestore. Uses TensorFlow.js + face-api.js for in-browser facial recognition — no server-side ML required. Faculty can take attendance via webcam in one click; the system matches faces against registered student profiles. Role-based dashboards for faculty and admin. Features digital signature verification, automated Excel report export, and Firestore real-time sync.',
+    features: [
+      'TensorFlow.js + face-api.js: real-time facial recognition entirely in-browser',
+      'Role-based dashboards: faculty view vs admin view with different permissions',
+      'One-click attendance — webcam scan matches registered student faces',
+      'Automated Excel export of attendance records',
+    ],
     category: 'AI / CV',
     tags: ['Next.js', 'TypeScript', 'TensorFlow.js', 'face-api.js', 'Firebase'],
     github: 'https://github.com/11249a040-sandeep/S5-attendence',
@@ -99,8 +160,15 @@ export const PROJECTS: Project[] = [
   {
     id: 'image-editor',
     title: 'Image Editor',
-    description: 'Desktop image editor with PyQt5/OpenCV — brightness, crop, compare, export as .exe.',
-    longDesc: 'Desktop image editing application. Stack: PyQt5 (GUI), OpenCV, NumPy, PyInstaller for distribution. Features: multi-image loading, brightness/contrast/exposure sliders, before/after comparison, crop, zoom, action logging to logs.txt. Buildable as standalone .exe with Inno Setup installer.',
+    description: 'Desktop image editor with PyQt5/OpenCV — brightness, crop, before/after compare, distributable as .exe.',
+    longDesc: 'Desktop image editing application built with Python, PyQt5, and OpenCV. Features a full GUI built with PyQt5 widgets, OpenCV for all image processing operations, and NumPy for pixel-level manipulation. Users can load folders of images by extension, apply brightness / contrast / exposure adjustments via sliders, use the crop tool, zoom with the mouse wheel, and compare before/after states side by side. All actions are logged to logs.txt. Distributable as a standalone .exe via PyInstaller, with an optional Inno Setup installer for Windows.',
+    features: [
+      'Batch load and edit multiple images from a folder by file extension',
+      'Real-time sliders for brightness, contrast, and exposure adjustment',
+      'Side-by-side before/after comparison view',
+      'Crop tool + mouse-wheel zoom',
+      'Build standalone .exe with PyInstaller + Inno Setup installer',
+    ],
     category: 'AI / CV',
     tags: ['Python', 'PyQt5', 'OpenCV', 'NumPy', 'PyInstaller'],
     github: 'https://github.com/sandy001-kki/image_editor_python',
@@ -112,7 +180,7 @@ export const PROJECTS: Project[] = [
     id: 'fitness-pro',
     title: 'Sandy Fitness Pro',
     description: 'PWA merging academic timetable + fitness tracking with OLED UI — no frameworks, pure JS.',
-    longDesc: 'Progressive Web App combining academic timetable management and fitness tracking with OLED-optimized UI. Live timetable auto-detects current day, strength training tracker, 1RM personal bests, rest timer, water intake logger, streak tracking, JSON export. Installable on Android/iOS.',
+    longDesc: 'Progressive Web App combining academic timetable management and fitness tracking, optimized for OLED screens. Built with pure HTML/CSS/JS — zero frameworks. Features: live timetable that auto-detects current day and highlights active class, strength training tracker with 1RM personal bests, rest timer, water intake logger, streak tracking, and JSON data export. Installable on Android and iOS like a native app.',
     category: 'Web Dev',
     tags: ['JavaScript', 'PWA', 'HTML5', 'CSS3', 'Local Storage'],
     github: 'https://github.com/sandy001-kki/sandy-fitness-pro',
@@ -150,7 +218,13 @@ export const PROJECTS: Project[] = [
     id: 'sales-ml-dashboard',
     title: 'Sales ML Dashboard',
     description: 'Interactive R Shiny dashboard — Random Forest model predicts export sales from meat inputs.',
-    longDesc: 'Interactive ML dashboard built with R and Shiny that predicts total export sales from beef, pork, and poultry inputs using Random Forest regression. Real-time prediction sliders, bulk CSV upload, model info panel, data visualization. Use cases: sales forecasting, export planning, supply chain optimization.',
+    longDesc: 'Interactive ML dashboard built with R and Shiny that predicts total export sales from beef, pork, and poultry input values using a Random Forest regression model. Features real-time prediction sliders that update the output instantly, bulk CSV upload for batch predictions, a model info panel displaying feature importance and accuracy metrics, and ggplot2 data visualizations. Use cases: sales forecasting, export planning, supply chain optimization.',
+    features: [
+      'Random Forest regression trained on export sales data',
+      'Real-time slider inputs → instant prediction output',
+      'Bulk CSV upload for batch prediction mode',
+      'Feature importance chart and model accuracy panel',
+    ],
     category: 'Data Science',
     tags: ['R', 'Shiny', 'Random Forest', 'Machine Learning', 'bslib'],
     github: 'https://github.com/11249a040-sandeep/sales-prediction-ml-dashboard-r',
@@ -163,7 +237,7 @@ export const PROJECTS: Project[] = [
     id: 'sales-forecast',
     title: 'ARIMA Sales Forecaster',
     description: 'Time series 12-month sales forecasting using ARIMA model and ggplot2 visualization in R.',
-    longDesc: 'Time series forecasting project using ARIMA modeling on monthly sales data. Stack: R, forecast package, ggplot2. Output: 12-month sales forecast.',
+    longDesc: 'Time series forecasting project using ARIMA modeling on monthly sales data. Stack: R, forecast package, ggplot2. Fits an ARIMA model to historical sales data and generates a 12-month ahead forecast with confidence intervals, visualized via ggplot2.',
     category: 'Data Science',
     tags: ['R', 'ARIMA', 'ggplot2', 'Time Series', 'Forecasting'],
     github: 'https://github.com/11249a040-sandeep/sales-forecast-r',
@@ -175,7 +249,7 @@ export const PROJECTS: Project[] = [
     id: 'todo-app',
     title: 'Task Manager App',
     description: 'Responsive to-do app with priority levels, due dates, search/filter, and Local Storage auth.',
-    longDesc: 'Simple and responsive To-Do List web application. Stack: Vanilla HTML/CSS/JS, Local Storage. Features: user authentication, add/edit/delete/complete tasks, due dates, priority levels (High/Medium/Low with color coding), search/filter, data persistence.',
+    longDesc: 'Simple and responsive To-Do List web application. Stack: Vanilla HTML/CSS/JS, Local Storage. Features: user authentication, add/edit/delete/complete tasks, due dates, priority levels (High/Medium/Low with color coding), search/filter, and full data persistence via Local Storage.',
     category: 'Web Dev',
     tags: ['JavaScript', 'HTML', 'CSS', 'Local Storage'],
     github: 'https://github.com/11249a040-sandeep/todo-list-app',
@@ -199,7 +273,7 @@ export const PROJECTS: Project[] = [
     id: 'face-detection',
     title: 'Face Detection',
     description: 'Haar cascade face detection using OpenCV — grayscale conversion, bounding boxes, output PNG.',
-    longDesc: 'Face detection using Haar cascades (OpenCV). Stack: Python 3.12, OpenCV (headless), NumPy, pre-trained Haarcascade classifier. Converts image to grayscale, runs detectMultiScale(), draws bounding boxes, saves out.png.',
+    longDesc: 'Face detection using Haar cascades (OpenCV). Stack: Python 3.12, OpenCV (headless), NumPy, pre-trained Haarcascade classifier. Converts image to grayscale, runs detectMultiScale(), draws bounding boxes around detected faces, and saves the result as out.png.',
     category: 'AI / CV',
     tags: ['Python', 'OpenCV', 'Haar Cascade', 'NumPy'],
     github: 'https://github.com/11249a040-sandeep/face-detection-haarcascade',
@@ -211,7 +285,7 @@ export const PROJECTS: Project[] = [
     id: 'scsvmv-labs',
     title: 'University Labs',
     description: 'Multi-semester academic coursework: DAA, DSA, OOP, Python — C++/C/Python/Jupyter.',
-    longDesc: 'Multi-semester academic coursework collection. Includes: DAA_LAB_SEM_4 (Design and Analysis of Algorithms), DSA_LAB_SEM3, OOPS_LAB_3, PYTHON_LAB_SEM_3, and Jupyter notebooks.',
+    longDesc: 'Multi-semester academic coursework collection. Includes: DAA_LAB_SEM_4 (Design and Analysis of Algorithms), DSA_LAB_SEM3, OOPS_LAB_3, PYTHON_LAB_SEM_3, and Jupyter notebooks for Python data experiments.',
     category: 'Academic',
     tags: ['C++', 'Python', 'C', 'Jupyter', 'Algorithms', 'DSA'],
     github: 'https://github.com/11249a040-sandeep/SCSVMV_LABS',
@@ -224,7 +298,7 @@ export const PROJECTS: Project[] = [
     id: 'oops-lab',
     title: 'OOP Lab — C++',
     description: '39 C++ programs: classes, inheritance, operator overloading, templates, exception handling.',
-    longDesc: '39 C++ programs from OOP Laboratory at SCSVMV University. Covers: classes (StudentRecord, BankAccount, LaptopDetails), inheritance (Basic, Multilevel), operator overloading, virtual/abstract classes, templates, exception handling, practical systems (StudentManagementSystem, LibraryManagement, EmployeePayroll), dynamic memory allocation.',
+    longDesc: '39 C++ programs from OOP Laboratory at SCSVMV University. Covers: classes (StudentRecord, BankAccount, LaptopDetails), inheritance (Basic, Multilevel), operator overloading, virtual/abstract classes, templates, exception handling, practical systems (StudentManagementSystem, LibraryManagement, EmployeePayroll), and dynamic memory allocation.',
     category: 'Academic',
     tags: ['C++', 'OOP', 'Templates', 'Inheritance', 'Exception Handling'],
     github: 'https://github.com/11249a040-sandeep/OOPS-LAB',
@@ -237,7 +311,7 @@ export const PROJECTS: Project[] = [
     id: 'robotic-car',
     title: 'Arduino Robotic Car',
     description: 'Entry-level Arduino robotic car — the starting point before the AGV projects.',
-    longDesc: 'Arduino-based robotic car project. Documentation in a Word doc. Beginner hardware project predating the more sophisticated AGV repos.',
+    longDesc: 'Arduino-based robotic car project. Documentation in a Word doc. Beginner hardware project predating the more sophisticated AGV repos. Built to learn motor control, sensor integration, and embedded C++ basics.',
     category: 'Robotics',
     tags: ['Arduino', 'C++', 'Hardware'],
     github: 'https://github.com/sandy001-kki/Roboyic-car',
@@ -249,7 +323,7 @@ export const PROJECTS: Project[] = [
     id: 'ascii-games',
     title: 'ASCII Space Invaders',
     description: 'Text-based ASCII Space Invaders in the terminal — pure Python, progressive difficulty.',
-    longDesc: 'Text-based ASCII Space Invaders clone running in the terminal. Controls: a/d to move ship, s to fire. Progressive difficulty scaling, no external dependencies (pure Python 3.x).',
+    longDesc: 'Text-based ASCII Space Invaders clone running in the terminal. Controls: a/d to move ship, s to fire. Progressive difficulty scaling — invaders speed up as they are eliminated. No external dependencies, runs on any Python 3.x installation.',
     category: 'Academic',
     tags: ['Python', 'Game', 'Terminal', 'ASCII'],
     github: 'https://github.com/11249a040-sandeep/games-',
@@ -261,7 +335,7 @@ export const PROJECTS: Project[] = [
     id: 'leetcodes',
     title: 'LeetCode Solutions',
     description: 'Personal LeetCode solutions in Python — Two Sum and growing.',
-    longDesc: 'Personal LeetCode solutions repository in Python.',
+    longDesc: 'Personal LeetCode solutions repository in Python. Covers algorithmic problem solving with a focus on data structures and time complexity.',
     category: 'Academic',
     tags: ['Python', 'Algorithms', 'LeetCode', 'DSA'],
     github: 'https://github.com/sandy001-kki/leetcodes',
@@ -271,6 +345,6 @@ export const PROJECTS: Project[] = [
   },
 ];
 
-export const CATEGORIES: Category[] = ['All', 'AI / CV', 'Robotics', 'Web Dev', 'Data Science', 'Academic'];
+export const CATEGORIES: Category[] = ['All', 'AI / CV', 'Robotics', 'Web Dev', 'Data Science', 'DevOps / Cloud', 'Academic'];
 
 export const FEATURED = PROJECTS.filter(p => p.featured);
