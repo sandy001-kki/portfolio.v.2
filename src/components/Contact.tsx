@@ -5,8 +5,8 @@ import AnimatedSection from './AnimatedSection';
 import { Github, Mail, ArrowRight, ExternalLink } from 'lucide-react';
 
 const LINKS = [
-  { icon: Github, label: 'Personal GitHub', value: 'sandy001-kki', href: 'https://github.com/sandy001-kki', color: '#6366F1' },
-  { icon: Github, label: 'University GitHub', value: '11249a040-sandeep', href: 'https://github.com/11249a040-sandeep', color: '#0284C7' },
+  { icon: Github, label: 'GitHub', value: 'sandeepbollavaram', href: 'https://github.com/sandeepbollavaram', color: '#6366F1' },
+  { icon: Github, label: 'Academic GitHub', value: '11249a040-sandeep', href: 'https://github.com/11249a040-sandeep', color: '#0284C7' },
   { icon: Mail, label: 'Email', value: 'Get in touch', href: '/contact', color: '#059669' },
 ];
 

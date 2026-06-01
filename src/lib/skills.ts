@@ -1,80 +1,66 @@
-export interface Skill {
-  name: string;
-  level: number; // 0-100
-  icon: string;
-}
+// Grouped skills — no percentages, no bars. Clean recruiter-scannable
+// tag groups aligned to the AI Systems / Platform / Full Stack positioning.
 
 export interface SkillGroup {
   category: string;
   color: string;
-  skills: Skill[];
+  skills: string[];
 }
 
 export const SKILL_GROUPS: SkillGroup[] = [
   {
-    category: 'AI / ML',
-    color: '#7C3AED',
-    skills: [
-      { name: 'Python', level: 92, icon: 'python' },
-      { name: 'OpenCV', level: 85, icon: 'opencv' },
-      { name: 'YOLOv8', level: 80, icon: 'yolo' },
-      { name: 'MediaPipe', level: 78, icon: 'mediapipe' },
-      { name: 'TensorFlow.js', level: 70, icon: 'tensorflow' },
-    ],
+    category: 'Programming',
+    color: '#6366F1',
+    skills: ['Go', 'Python', 'TypeScript', 'C#', 'JavaScript', 'Dart', 'SQL', 'C++', 'R'],
   },
   {
-    category: 'Web Dev',
-    color: '#0284C7',
-    skills: [
-      { name: 'Next.js', level: 88, icon: 'nextjs' },
-      { name: 'TypeScript', level: 85, icon: 'typescript' },
-      { name: 'React', level: 87, icon: 'react' },
-      { name: 'Tailwind CSS', level: 90, icon: 'tailwind' },
-      { name: 'Firebase', level: 82, icon: 'firebase' },
-      { name: 'Node.js', level: 75, icon: 'nodejs' },
-    ],
-  },
-  {
-    category: 'Robotics',
-    color: '#059669',
-    skills: [
-      { name: 'Raspberry Pi', level: 80, icon: 'raspberrypi' },
-      { name: 'Arduino', level: 78, icon: 'arduino' },
-      { name: 'ESP32', level: 75, icon: 'esp32' },
-      { name: 'Flutter / Dart', level: 72, icon: 'flutter' },
-      { name: 'C++', level: 75, icon: 'cpp' },
-    ],
-  },
-  {
-    category: 'Data Science',
-    color: '#C2410C',
-    skills: [
-      { name: 'R / Shiny', level: 72, icon: 'r' },
-      { name: 'Random Forest', level: 68, icon: 'ml' },
-      { name: 'ARIMA', level: 65, icon: 'timeseries' },
-      { name: 'ggplot2', level: 70, icon: 'ggplot' },
-      { name: 'Jupyter', level: 80, icon: 'jupyter' },
-    ],
-  },
-  {
-    category: 'DevOps / Cloud',
+    category: 'Platform Engineering',
     color: '#0891B2',
-    skills: [
-      { name: 'Go', level: 78, icon: 'go' },
-      { name: 'Kubernetes', level: 75, icon: 'k8s' },
-      { name: 'Docker', level: 72, icon: 'docker' },
-      { name: 'Linux', level: 80, icon: 'linux' },
-      { name: 'Helm', level: 68, icon: 'helm' },
-    ],
+    skills: ['Kubernetes', 'Kubebuilder', 'controller-runtime', 'CRDs', 'Webhooks', 'Helm', 'gRPC', 'Docker', 'GitHub Actions', 'CI/CD'],
+  },
+  {
+    category: 'AI & LLM',
+    color: '#7C3AED',
+    skills: ['MCP', 'AI Agents', 'RAG', 'Ollama', 'LangChain', 'Embeddings', 'Vector Retrieval', 'Whisper', 'Local AI'],
+  },
+  {
+    category: 'Backend',
+    color: '#0D9488',
+    skills: ['FastAPI', 'Node.js', 'PostgreSQL', 'Firebase', 'REST', 'gRPC', 'SQLite'],
+  },
+  {
+    category: 'Frontend',
+    color: '#0284C7',
+    skills: ['Next.js', 'React', 'Tailwind CSS', 'TypeScript', 'Three.js'],
+  },
+  {
+    category: 'Desktop',
+    color: '#D97706',
+    skills: ['WinUI 3', '.NET', 'PyQt6', 'Windows Release Pipeline', 'Local AI'],
+  },
+  {
+    category: 'Robotics & IoT',
+    color: '#059669',
+    skills: ['Raspberry Pi', 'ESP32', 'Arduino', 'LiDAR', 'SLAM', 'Flutter'],
   },
 ];
 
+// Quick Snapshot — recruiter 5-second scan groups.
+export const SNAPSHOT = [
+  { label: 'Platform Engineering', detail: 'Go, Kubernetes, Operators, Helm, gRPC', color: '#0891B2' },
+  { label: 'AI Systems', detail: 'MCP, RAG, AI Agents, Ollama, Vector Memory', color: '#7C3AED' },
+  { label: 'Full Stack', detail: 'Next.js, Flutter, FastAPI, PostgreSQL', color: '#0284C7' },
+  { label: 'Desktop Applications', detail: 'WinUI 3, .NET, Local AI', color: '#D97706' },
+  { label: 'Open Source', detail: 'Multiple public projects and releases', color: '#6366F1' },
+];
+
+// Flat technology cloud, grouped-ready ordering for the Skills section footer.
 export const TECH_STACK = [
-  'Python', 'TypeScript', 'JavaScript', 'C++', 'R', 'Dart',
-  'Next.js', 'React', 'Node.js', 'Flutter',
-  'OpenCV', 'YOLOv8', 'MediaPipe', 'TensorFlow.js',
-  'Firebase', 'Supabase', 'PostgreSQL',
-  'Raspberry Pi', 'Arduino', 'ESP32',
-  'Tailwind CSS', 'Three.js', 'WebGL',
-  'Git', 'Docker', 'Kubernetes (K8s)', 'Linux',
+  'Go', 'Python', 'TypeScript', 'C#', 'C++', 'Dart', 'SQL', 'R',
+  'Kubernetes', 'Kubebuilder', 'Helm', 'gRPC', 'Docker', 'GitHub Actions',
+  'MCP', 'RAG', 'Ollama', 'LangChain', 'Embeddings', 'Whisper',
+  'FastAPI', 'Node.js', 'PostgreSQL', 'Firebase',
+  'Next.js', 'React', 'Tailwind CSS', 'Three.js',
+  'WinUI 3', '.NET', 'PyQt6',
+  'Raspberry Pi', 'ESP32', 'LiDAR', 'SLAM', 'Flutter',
 ];

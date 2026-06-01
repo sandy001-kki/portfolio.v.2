@@ -2,40 +2,43 @@
 
 import Image from 'next/image';
 import AnimatedSection from './AnimatedSection';
-import { Github, MapPin, GraduationCap, Cpu, Brain, Code2, Linkedin, Cloud } from 'lucide-react';
+import { Github, MapPin, GraduationCap, Cpu, BrainCircuit, Boxes, Linkedin, Cloud, Download } from 'lucide-react';
+import { GITHUB_PRIMARY, GITHUB_ACADEMIC } from '@/lib/projects';
+
+const RESUME_PATH = '/Sandeep_Kumar_Bollavaram_Resume.pdf';
 
 const HIGHLIGHTS = [
   {
-    icon: Brain,
-    title: 'AI & Computer Vision',
-    desc: 'YOLOv8 weapon detection, MediaPipe gesture recognition, TensorFlow.js facial attendance — real production AI systems.',
+    icon: Boxes,
+    title: 'Platform Engineering',
+    desc: 'Shukra — a production-grade Kubernetes operator in Go (Kubebuilder, CRDs, webhooks, Helm OCI, gRPC). One CRD provisions an entire app environment.',
+    color: '#0891B2',
+    bg: 'rgba(8,145,178,0.07)',
+    border: 'rgba(8,145,178,0.18)',
+  },
+  {
+    icon: BrainCircuit,
+    title: 'AI Systems & LLM Infra',
+    desc: 'Kairo — MCP-based persistent memory for AI coding agents. Local-first LLM systems with Ollama, embeddings, and vector retrieval.',
     color: '#7C3AED',
     bg: 'rgba(124,58,237,0.07)',
     border: 'rgba(124,58,237,0.18)',
   },
   {
-    icon: Cpu,
-    title: 'Robotics & Hardware',
-    desc: 'Autonomous robots with Raspberry Pi, ESP32, YDLIDAR sensors, Arduino. Flutter control apps built from scratch.',
-    color: '#059669',
-    bg: 'rgba(5,150,105,0.07)',
-    border: 'rgba(5,150,105,0.18)',
-  },
-  {
-    icon: Code2,
-    title: 'Full-Stack Web',
-    desc: 'Next.js + Firebase production apps. Most ambitious: SocialWorld — a living 3D city of Facebook users in Three.js/WebGL.',
+    icon: Cloud,
+    title: 'Full Stack & Cloud',
+    desc: 'University ERP across web + Flutter, and OCI SentinelMesh — a FastAPI/React cloud compliance platform with a rule engine and CI.',
     color: '#0284C7',
     bg: 'rgba(2,132,199,0.07)',
     border: 'rgba(2,132,199,0.18)',
   },
   {
-    icon: Cloud,
-    title: 'DevOps & Cloud',
-    desc: 'Shukra: a production-grade Kubernetes operator in Go — one YAML deploys your entire cloud-native application stack.',
-    color: '#0891B2',
-    bg: 'rgba(8,145,178,0.07)',
-    border: 'rgba(8,145,178,0.18)',
+    icon: Cpu,
+    title: 'Desktop & Robotics',
+    desc: 'Vayu — an offline Windows AI assistant (WinUI 3, .NET, Ollama). Autonomous vehicles with Raspberry Pi, LiDAR, and SLAM.',
+    color: '#059669',
+    bg: 'rgba(5,150,105,0.07)',
+    border: 'rgba(5,150,105,0.18)',
   },
 ];
 
@@ -75,16 +78,13 @@ export default function About() {
                   width={80}
                   height={80}
                   style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-                  onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).src = 'https://github.com/sandy001-kki.png';
-                  }}
                 />
               </div>
               <div>
                 <p style={{ fontWeight: 700, color: '#0F0E14', fontSize: '1.1rem', lineHeight: 1.2, marginBottom: '2px' }}>
                   Sandeep Kumar Bollavaram
                 </p>
-                <p style={{ color: '#9CA3AF', fontSize: '0.82rem' }}>B.Tech CSE · Batch 2028</p>
+                <p style={{ color: '#9CA3AF', fontSize: '0.82rem' }}>AI Systems · Platform · Full Stack Engineer</p>
               </div>
             </div>
 
@@ -96,20 +96,28 @@ export default function About() {
               About Me
             </p>
             <h2 className="section-title" style={{ marginBottom: '22px', color: '#0F0E14' }}>
-              Building at the edge of<br />
-              <span style={{ color: '#6366F1' }}>AI &amp; hardware.</span>
+              Engineer.<br />
+              <span style={{ color: '#6366F1' }}>Systems builder.</span>
             </h2>
             <p style={{ color: '#4B5563', lineHeight: 1.8, marginBottom: '14px', fontSize: '0.97rem' }}>
-              I&apos;m <span style={{ color: '#0F0E14', fontWeight: 600 }}>Sandeep Kumar Bollavaram</span> — a B.Tech CSE student at{' '}
-              <span style={{ color: '#6366F1', fontWeight: 500 }}>SCSVMV University</span>, Kanchipuram.
-              I build things at the intersection of artificial intelligence, robotics, and the web.
+              I&apos;m <span style={{ color: '#0F0E14', fontWeight: 600 }}>Sandeep Kumar Bollavaram</span> — an{' '}
+              <span style={{ color: '#6366F1', fontWeight: 500 }}>AI Systems, LLM, and Platform Engineer</span>.
+              I build production software end to end: Kubernetes operators in Go, AI agent memory systems,
+              local-first LLM infrastructure, and full-stack platforms.
             </p>
             <p style={{ color: '#4B5563', lineHeight: 1.8, marginBottom: '28px', fontSize: '0.97rem' }}>
-              From <span style={{ color: '#0F0E14', fontWeight: 500 }}>autonomous robots with LiDAR</span> to{' '}
-              <span style={{ color: '#0F0E14', fontWeight: 500 }}>real-time AI security cameras</span> and creative{' '}
-              <span style={{ color: '#0F0E14', fontWeight: 500 }}>Kubernetes platform operators in Go</span> —
-              every project pushes further than the last.
+              I work across the stack and the system — from{' '}
+              <span style={{ color: '#0F0E14', fontWeight: 500 }}>CRDs, webhooks, and gRPC control planes</span> to{' '}
+              <span style={{ color: '#0F0E14', fontWeight: 500 }}>MCP-based agent infrastructure</span> and{' '}
+              <span style={{ color: '#0F0E14', fontWeight: 500 }}>native Windows AI assistants</span>.
+              I also build product at <span style={{ color: '#0F0E14', fontWeight: 500 }}>Flexdee Technologies</span>,
+              owning AI platform features, backend systems, and CI/CD.
             </p>
+
+            {/* Resume button */}
+            <a href={RESUME_PATH} download className="hero-cta hero-cta--primary" style={{ marginBottom: '24px' }}>
+              <Download size={16} /> Download Resume
+            </a>
 
             {/* Meta info */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', marginBottom: '28px' }}>
@@ -130,8 +138,8 @@ export default function About() {
             {/* Social links */}
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
               {[
-                { label: 'Personal GitHub', href: 'https://github.com/sandy001-kki', icon: Github },
-                { label: 'University GitHub', href: 'https://github.com/11249a040-sandeep', icon: Github },
+                { label: 'GitHub', href: GITHUB_PRIMARY, icon: Github },
+                { label: 'Academic GitHub', href: GITHUB_ACADEMIC, icon: Github },
                 { label: 'LinkedIn', href: 'https://www.linkedin.com/in/sandeepbollavaram', icon: Linkedin },
               ].map(link => (
                 <a

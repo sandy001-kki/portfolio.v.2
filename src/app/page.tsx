@@ -1,8 +1,12 @@
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import About from '@/components/About';
+import QuickSnapshot from '@/components/QuickSnapshot';
+import FeaturedProjects from '@/components/FeaturedProjects';
+import EngineeringFocus from '@/components/EngineeringFocus';
 import Skills from '@/components/Skills';
-import Projects from '@/components/Projects';
+import GitHubActivity from '@/components/GitHubActivity';
+import Experience from '@/components/Experience';
+import About from '@/components/About';
 import Education from '@/components/Education';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
@@ -13,9 +17,13 @@ export default function Home() {
     <main className="relative overflow-x-hidden">
       <Navbar />
       <Hero />
-      <About />
+      <QuickSnapshot />
+      <FeaturedProjects />
+      <EngineeringFocus />
       <Skills />
-      <Projects />
+      <GitHubActivity />
+      <Experience />
+      <About />
       <Education />
       <Contact />
       <Footer />
