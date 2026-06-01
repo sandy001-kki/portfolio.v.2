@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 import {
   Loader2, LogOut, Users, Mail, Briefcase, TrendingUp,
   RefreshCw, ChevronDown, ChevronUp, Shield,
+  type LucideIcon,
 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -83,7 +84,7 @@ function ExpandRow({ children, extra }: { children: React.ReactNode; extra: Reac
 }
 
 /* ── Stat card ── */
-function StatCard({ icon: Icon, label, value, sub, color }: { icon: React.ElementType; label: string; value: number | string; sub?: string; color: string }) {
+function StatCard({ icon: Icon, label, value, sub, color }: { icon: LucideIcon; label: string; value: number | string; sub?: string; color: string }) {
   return (
     <div style={{ background: 'rgba(15,23,42,0.5)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '16px', padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
       <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: `${color}14`, border: `1px solid ${color}28`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
