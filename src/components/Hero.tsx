@@ -77,17 +77,20 @@ export default function Hero() {
   return (
     <section
       id="hero"
+      className="hero-section"
       style={{
         position: 'relative',
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '120px 24px 80px',
+        padding: '116px 24px 72px',
         overflow: 'hidden',
-        background: '#FAF9F6',
       }}
     >
+      {/* Ultra-light film-grain texture layer */}
+      <div className="hero-noise" aria-hidden="true" />
+
       <div
         style={{
           position: 'relative',
@@ -215,10 +218,55 @@ export default function Hero() {
               <Mail size={16} /> Contact
             </a>
           </div>
+
+          {/* Trust strip — flagship projects */}
+          <div
+            style={{
+              marginTop: '32px',
+              paddingTop: '20px',
+              borderTop: '1px solid rgba(15,23,42,0.07)',
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              gap: '10px',
+            }}
+          >
+            <span style={{
+              fontSize: '0.66rem', fontWeight: 700, letterSpacing: '0.14em',
+              textTransform: 'uppercase', color: '#9CA3AF',
+              fontFamily: 'JetBrains Mono, monospace',
+            }}>
+              Building
+            </span>
+            {['Shukra', 'Kairo', 'Vayu', 'OCI SentinelMesh', 'Vibrance'].map((name, i, arr) => (
+              <span key={name} style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{
+                  fontSize: '0.8rem', fontWeight: 600, color: '#4B5563',
+                  fontFamily: 'JetBrains Mono, monospace',
+                }}>
+                  {name}
+                </span>
+                {i < arr.length - 1 && <span style={{ color: '#C8C7CC', fontSize: '0.7rem' }}>·</span>}
+              </span>
+            ))}
+          </div>
         </div>
 
-        {/* ── RIGHT: Profile Photo with animated ring + cursor spotlight ── */}
-        <div style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {/* ── RIGHT: Organic liquid-blob portrait with cursor spotlight ── */}
+        <div style={{ flex: '0 0 auto', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          {/* Soft radial halo behind the portrait (portrait-oriented) */}
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              width: 420,
+              height: 460,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(6,182,212,0.18), rgba(99,102,241,0.10) 46%, transparent 70%)',
+              filter: 'blur(10px)',
+              pointerEvents: 'none',
+            }}
+          />
           <div
             className="profile-photo-ring"
             tabIndex={0}
@@ -226,15 +274,20 @@ export default function Hero() {
             onMouseMove={handleSpotlight}
             onMouseLeave={resetSpotlight}
           >
+            {/* Falling water droplets (decorative) */}
+            <div className="profile-droplets" aria-hidden="true">
+              <span /><span /><span /><span /><span />
+            </div>
             <div className="profile-photo-ring__inner" ref={innerRef}>
               {/* Bottom layer: grayscale */}
               <Image
                 className="photo-gray"
                 src="/images/profile.jpg"
                 alt="Sandeep Kumar Bollavaram, AI Systems Engineer"
-                width={240}
-                height={240}
-                sizes="240px"
+                width={270}
+                height={320}
+                sizes="270px"
+                style={{ objectPosition: 'center 22%' }}
                 priority
               />
               {/* Top layer: full color, revealed by the cursor spotlight mask */}
@@ -243,9 +296,10 @@ export default function Hero() {
                 src="/images/profile.jpg"
                 alt=""
                 aria-hidden="true"
-                width={240}
-                height={240}
-                sizes="240px"
+                width={270}
+                height={320}
+                sizes="270px"
+                style={{ objectPosition: 'center 22%' }}
                 priority
               />
             </div>
